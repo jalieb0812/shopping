@@ -115,7 +115,7 @@ def load_data(filename):
             if row['VisitorType'] == 'Returning_Visitor':
                 new_list.append(1)
 
-            if row['VisitorType'] == 'New_Visitor':
+            if row['VisitorType'] == 'New_Visitor' or row['VisitorType'] == 'Other':
                 new_list.append(0)
 
 
@@ -156,9 +156,17 @@ def load_data(filename):
 
         #print(f"labels_length: {labels_length} \n")
 
-        print(f"labels: {labels} \n ")
+    #    print(f"labels: {labels} \n ")
 
-        print(f"evidence: {evidence[0]} \n")
+    #    print(f"evidence: {evidence[0]} \n")
+
+    # count = 0
+    # for list in evidence:
+    #     if len(list) == 16:
+    #         count += 1
+    #
+    #         print(f'something is up; {list}')
+    # print(count)
 
     """
     Load shopping data from a CSV file `filename` and convert into a list of
@@ -195,7 +203,52 @@ def train_model(evidence, labels):
     Given a list of evidence lists and a list of labels, return a
     fitted k-nearest neighbor model (k=1) trained on the data.
     """
-    raise NotImplementedError
+
+
+
+    model = KNeighborsClassifier(n_neighbors=1)
+
+
+    #train on half of the evidence and labels
+    """
+    holdout = int(0.50 * len(evidence))
+
+    training_evidence = evidence[holdout:]
+    training_labels = labels[holdout:]
+    model.fit(training_evidence, training_labels)
+    """
+
+
+    model.fit(evidence, labels)
+
+
+    # testing_evidence = evidence[:holdout]
+    # testing_labels = labels[:holdout]
+    #
+    # predictions = model.predict(testing_evidence)
+    #
+    # correct = 0
+    # incorrect = 0
+    # total = 0
+    #
+    # for label, prediction in zip(testing_labels, predictions):
+    #     total += 1
+    #     if label == prediction:
+    #         correct += 1
+    #     else:
+    #         incorrect +=1
+    #
+    # print(f"results for model {type(model).__name__} \n ")
+    # print(f"correct: {correct} \n")
+    # print(f"incorrect: {incorrect} \n")
+    # print(f"accuracy: {(100 * correct / total)/100} \n")
+    #
+    # print(predictions)
+    # #
+
+
+
+    return model
 
 
 def evaluate(labels, predictions):
@@ -213,7 +266,37 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+
+    # holdout = int(0.50 * len(evidence))
+    #
+    # testing_evidence = evidence[:holdout]
+    # testing_labels = labels[:holdout]
+    #
+    # predictions = model.predict(testing_evidence)
+
+    correct = 0
+    incorrect = 0
+    total = 0
+
+    for label, prediction in zip(labels, predictions):
+        total += 1
+        if label == prediction:
+            correct += 1
+        else:
+            incorrect +=1
+
+    sensitivity = (100 * correct / total) / 100
+    specificty = (100 * incorrect / total) / 100
+    #print(f"results for model {type(model).__name__} \n ")
+    print(f"correct: {correct} \n")
+    print(f"incorrect: {incorrect} \n")
+    print(f"accuracy: {100 * correct / total} \n")
+    print(f"sensitivity: {sensitivity} \n")
+
+    print(f"specificty: {specificty} \n ")
+
+    return (sensitivity, specificty)
+
 
 
 if __name__ == "__main__":
