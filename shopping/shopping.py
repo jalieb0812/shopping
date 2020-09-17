@@ -4,6 +4,8 @@ import sys
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
+"""jordan lieber cs50ai project 4a shopping"""
+
 TEST_SIZE = 0.4
 
 
@@ -33,6 +35,33 @@ def main():
 
 def load_data(filename):
 
+    """
+    Load shopping data from a CSV file `filename` and convert into a list of
+    evidence lists and a list of labels. Return a tuple (evidence, labels).
+
+    evidence should be a list of lists, where each list contains the
+    following values, in order:
+        - Administrative, an integer
+        - Administrative_Duration, a floating point number
+        - Informational, an integer
+        - Informational_Duration, a floating point number
+        - ProductRelated, an integer
+        - ProductRelated_Duration, a floating point number
+        - BounceRates, a floating point number
+        - ExitRates, a floating point number
+        - PageValues, a floating point number
+        - SpecialDay, a floating point number
+        - Month, an index from 0 (January) to 11 (December)
+        - OperatingSystems, an integer
+        - Browser, an integer
+        - Region, an integer
+        - TrafficType, an integer
+        - VisitorType, an integer 0 (not returning) or 1 (returning)
+        - Weekend, an integer 0 (if false) or 1 (if true)
+
+    labels should be the corresponding list of labels, where each label
+    is 1 if Revenue is true, and 0 otherwise.
+    """
     with open(filename, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
 
@@ -139,62 +168,6 @@ def load_data(filename):
 
 
 
-            #evidence.append(row[0:17])
-            #labels.append(row[17])
-            #print(row['Administrative'])
-
-
-
-        #del evidence[0]
-        #del labels[0]
-
-        #evidence_length = len(evidence)
-
-        #labels_length = len(labels)
-
-        #print(f"evidence_length: {evidence_length} \n")
-
-        #print(f"labels_length: {labels_length} \n")
-
-    #    print(f"labels: {labels} \n ")
-
-    #    print(f"evidence: {evidence[0]} \n")
-
-    # count = 0
-    # for list in evidence:
-    #     if len(list) == 16:
-    #         count += 1
-    #
-    #         print(f'something is up; {list}')
-    # print(count)
-
-    """
-    Load shopping data from a CSV file `filename` and convert into a list of
-    evidence lists and a list of labels. Return a tuple (evidence, labels).
-
-    evidence should be a list of lists, where each list contains the
-    following values, in order:
-        - Administrative, an integer
-        - Administrative_Duration, a floating point number
-        - Informational, an integer
-        - Informational_Duration, a floating point number
-        - ProductRelated, an integer
-        - ProductRelated_Duration, a floating point number
-        - BounceRates, a floating point number
-        - ExitRates, a floating point number
-        - PageValues, a floating point number
-        - SpecialDay, a floating point number
-        - Month, an index from 0 (January) to 11 (December)
-        - OperatingSystems, an integer
-        - Browser, an integer
-        - Region, an integer
-        - TrafficType, an integer
-        - VisitorType, an integer 0 (not returning) or 1 (returning)
-        - Weekend, an integer 0 (if false) or 1 (if true)
-
-    labels should be the corresponding list of labels, where each label
-    is 1 if Revenue is true, and 0 otherwise.
-    """
     return (evidence, labels)
 
 
@@ -209,9 +182,10 @@ def train_model(evidence, labels):
     model = KNeighborsClassifier(n_neighbors=1)
 
 
-    #train on half of the evidence and labels
+
     """
     holdout = int(0.50 * len(evidence))
+    #train on half of the evidence and labels
 
     training_evidence = evidence[holdout:]
     training_labels = labels[holdout:]
@@ -267,12 +241,6 @@ def evaluate(labels, predictions):
     actual negative labels that were accurately identified.
     """
 
-    # holdout = int(0.50 * len(evidence))
-    #
-    # testing_evidence = evidence[:holdout]
-    # testing_labels = labels[:holdout]
-    #
-    # predictions = model.predict(testing_evidence)
 
     correct = 0
     incorrect = 0
@@ -285,12 +253,12 @@ def evaluate(labels, predictions):
         else:
             incorrect +=1
 
-    sensitivity = (100 * correct / total) / 100
-    specificty = (100 * incorrect / total) / 100
+    sensitivity = float((100 * correct / total) / 100)
+    specificty = float((100 * incorrect / total) / 100)
     #print(f"results for model {type(model).__name__} \n ")
-    print(f"correct: {correct} \n")
-    print(f"incorrect: {incorrect} \n")
-    print(f"accuracy: {100 * correct / total} \n")
+    #print(f"correct: {correct} \n")
+    #print(f"incorrect: {incorrect} \n")
+    #print(f"accuracy: {100 * correct / total} \n")
     print(f"sensitivity: {sensitivity} \n")
 
     print(f"specificty: {specificty} \n ")
