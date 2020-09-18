@@ -246,19 +246,41 @@ def evaluate(labels, predictions):
     incorrect = 0
     total = 0
 
+    sensitivity = float(0)
+    specificty = float(0)
+
+    buy = float(0)
+    not_buy = float(0)
+
     for label, prediction in zip(labels, predictions):
         total += 1
-        if label == prediction:
-            correct += 1
-        else:
-            incorrect +=1
 
-    sensitivity = float((100 * correct / total) / 100)
-    specificty = float((100 * incorrect / total) / 100)
+        if label == 1:
+
+            buy += 1
+
+            if label == prediction:
+                sensitivity += 1
+                correct += 1
+            else:
+                incorrect += 1
+
+        if label == 0:
+            not_buy += 1
+            if label == prediction:
+                specificty += 1
+                correct += 1
+            else:
+                incorrect += 1
+
+    sensitivity = sensitivity / buy
+
+    specificty = specificty / not_buy
     #print(f"results for model {type(model).__name__} \n ")
     #print(f"correct: {correct} \n")
     #print(f"incorrect: {incorrect} \n")
     #print(f"accuracy: {100 * correct / total} \n")
+    print("\n")
     print(f"sensitivity: {sensitivity} \n")
 
     print(f"specificty: {specificty} \n ")
